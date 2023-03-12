@@ -1,0 +1,109 @@
+{% extends 'new_base.html' %}
+
+{% block title %}
+    Assign Asset
+{% endblock %}
+
+{% block table %}
+<form method="post">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">Assign Asset</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Resource Allocation</span>
+                      </button>
+                    </div>
+                    <div czlass="line"></div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Asset</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" id="asset" name="asset" data-placeholder="Select Assets " multiple>
+                              {% for asset in assets %}
+                                <option value="{{asset.id}}">{{asset.tag}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Assignee</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" id="assignee" name="assignee" >
+                                <option disabled selected>Select Assignee</option>
+                              {% for user in users %}
+                                <option value="{{user.id}}">{{user.first_name}} {{ user.last_name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Request</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" id="request" name="request">
+                                <option disabled selected>Select Request</option>
+                              {% for hr in hardware_requests %}
+                                <option value="{{hr.id}}">{{ hr.device_requested }} for {{hr.requisitioner.first_name}} {{ hr.requisitioner.last_name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% if messages %}
+                    <ul class="">
+                        {% for message in messages %}
+                            {% if message.tags %}
+                                <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                            {{ message }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                      <button class="btn btn-warning" type="submit">submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+   </form>
+{% endblock %}
+
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+{% endblock %}

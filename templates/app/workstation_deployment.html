@@ -1,0 +1,154 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  Workstation Configuration
+{% endblock %}
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">Workstation Configuration</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">A</span>
+                        <span class="bs-stepper-label">Update Device Information</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                  <form method="post" id="configuration">
+                    {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Computer Name AD</b></label>
+                                    <input type="text" class="form-control" placeholder="{{asset.active_directory_id }}" id="ad_name" value="{{asset.active_directory_id }}" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Completed Configurations</b></label>
+                                  <select class="form-control select2" data-placeholder="Select Completed Configurations" style="width: 100%;" name="apps" id="apps" multiple>
+                                    {% for app in applications %}
+                                      <option value="{{app.name}}" class="form-control">{{app.name}} </option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                            <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Completed Configurations</b></label>
+                                    {% for app in applications %}
+                                        <button id="{{app.id}}" class="form-control btn-small" disabled>{{app.name}}</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <input type="hidden" class="tag" name="tag" id="tag" value="{{asset.serial_tag}}" />
+                      <button class="btn btn-warning" type="submit">Submit</button>
+                  </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+
+
+{% block js %}
+function updatePage(){
+    $.ajax({
+            url: "/api/applications/",
+            // on success
+                    success: function (response) {
+                            var applications = response;
+                            $.ajax({
+                                url: "/api/asset_detail/"+$(".tag").val()+"/",
+                                // on success
+                                        success: function (response) {
+                                            for( var key in response.installed_applications){
+                                                $("#"+applications[response.installed_applications[key]-1].id).empty()
+                                                $("#"+applications[response.installed_applications[key]-1].id).append(applications[response.installed_applications[key]-1].name)
+                                                $("#"+applications[response.installed_applications[key]-1].id).addClass("btn-success")
+                                                $("#ad_name").empty();
+                                                $("#ad_name").append(response.active_directory_id);
+
+                                            }
+                                        }
+                            })
+                    }
+    })
+}
+$(document).ready(function(){
+    alert($("#tag").val())
+    updatePage();
+})
+$(document).on("submit", "#configuration", function (e) {
+        var Toast = Swal.mixin({
+               toast: true,
+               position: 'top-end',
+               showConfirmButton: false,
+               timer: 3000
+        });
+        e.preventDefault();
+
+
+        $.ajax({
+            type: 'POST',
+            url: "/abcassetsmanager/workstation_deployment/"+$("#tag").val()+"/",
+
+            data: {
+                ad_name: $('#ad_name').val(),
+                apps : $('#apps').val(),
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                success: function(data){
+                           Toast.fire({
+                            icon: 'success',
+                            title: 'Configuration Saved Successifully'
+                        })
+                        $('#configuration').trigger("reset");
+                        $("#apps option").prop("selected", false).trigger( "change" );
+
+                }
+            }
+        })
+
+        updatePage();
+})
+
+
+
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+{% endblock %}

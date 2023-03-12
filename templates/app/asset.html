@@ -1,0 +1,81 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  Asset Log
+{% endblock %}
+{% block table %}
+  <form class="form-sample" method="post" id="form">
+    {% csrf_token %}
+                    <p class="card-description">
+                      LOG AN ASSET
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Asset Tag</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="asset_tag" name="asset_tag"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Serial Number</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="serial_number" id="serial_number"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Category</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="category" id="category">
+                              <option selected="selected" disabled>Select Category</option >
+                              {% for category in categories %}
+                                <option value="{{ category}}">{{category.name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Colour</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" placeholder="Yellow Eg" name="colour" type="text" id="colour" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="allocation" id="allocation" value="" >
+                                allocated
+                              </label>
+                            </div>
+                          </div>
+                      {% if request.user.employee.is_manager %}
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Allocation</label>
+                          <div class="col-sm-4">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="allocation" id="allocation" value="" >
+                                allocated
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="mt-3 row justify-content-center">
+                  <button class="btn btn-block btn-primary font-weight-medium d-flex justify-content-center" type="submit" >SUBMIT ASSET</button>
+                </div>
+  </form>
+{% endblock %}

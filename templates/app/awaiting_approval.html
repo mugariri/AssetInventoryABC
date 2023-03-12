@@ -1,0 +1,61 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  Awaiting Approval
+{% endblock %}
+{% block table %}
+<div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Asset Awaiting Approval</h4>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>
+                            Asset Tag
+                          </th>
+                          <th>
+                            Sender
+                          </th>
+                          <th>
+                            Recipient
+                          </th>
+                          <th>
+                            Transfer ID
+                          </th>
+                          <th>
+                            Transfer Type
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for transfer in awaiting_approval %}
+                      <a href="#">
+                        <tr>
+                          <td class="py-1">
+                            <a href="{% url 'abcassetsmanager:asset_transfer' id=transfer.id %}">{{transfer.asset.tag}}</a>
+                          </td>
+                          <td>
+                            {{ transfer.being_moved_by }}
+                          </td>
+                          <td>
+                            {% if transfer.new_custodian is not None %}{{ transfer.new_custodian }} {% else %}{{transfer.external_company.name}} {% endif %}
+                          </td>
+                          <td>
+                            {{ transfer.id }}
+                          </td>
+                          <td>
+                            {{ transfer.type }}
+                          </td>
+                        </tr>
+                        </a>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  External Transfer
+{% endblock %}
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">External Transfer Log</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Initiate External Transaction</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                  <form method="post">
+                    {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                   <div class="form-group row">
+                                      <label class="col-sm-4 col-form-label"><b>Transfer Type</b></label>
+
+                                      <div class="col-sm-6">
+                                            <h1 class="text-danger">External</h1>
+                                      </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Reason For Transfer</b></label>
+                                  <input type="text" class="form-control" id="reason_for_transfer" name="reason_for_transfer" placeholder="eg Repairs"
+                                   autocapitalize="on" autocomplete="off" required/>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Transaction Assets</b></label>
+                                    <select class="form-control select2" data-placeholder="Select Assets" style="width: 100%;" name="selected" id="selected" required>
+                                    <option  class="form-control"  selected disabled>Select Asset</option>
+                                    {% for asset in assets %}
+                                                <option value="{{asset.tag}}" class="form-control">{{asset.tag}}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Receiving Company</b></label>
+                                  <select class="form-control select2 company" data-placeholder="Select Company" style="width: 100%;" name="company" id="company" >
+                                      <option class="form-control" selected disabled>Destination Company</option>
+                                    {% for company in companies %}
+                                      <option value="{{company.name}}">{{company.name}}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="form-group">
+                              <label><b>Request Authorization From Manager</b></label>
+                              <select class="form-control select2"  placeholder="Select Manager" style="width: 100%;" name="approver" id="approver" >
+                                {% for user in users %}
+                                  {% if user.employee.is_manager and user.employee.department == request.user.employee.department%}
+                                    <option value="{{user.username}}" class="form-control">{{user.first_name}} {{ user.last_name}}</option>
+                                  {% endif %}
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                      {% if messages %}
+                          <ul class="">
+                              {% for message in messages %}
+                                  {% if message.tags %}
+                                      <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                  {{ message }}</li>
+                              {% endif %}
+                              {% endfor %}
+                          </ul>
+                      {% endif %}
+                    </div>
+                      <button class="btn btn-warning" type="submit">Initiate Transfer</button>
+
+                  </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+{% endblock %}

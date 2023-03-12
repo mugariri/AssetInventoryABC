@@ -1,0 +1,137 @@
+{% extends "new_base.html" %}
+{% block title %} Asset Transfering {% endblock %}
+
+{% block table %}
+<div class="content-wrapper ">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Asset Transfer</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active">Asset Transfer</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-globe"></i> BANCABC ASSET TRANSACTION<br>
+                    <small class="float-right">Transfer Type: <b>{{transfer.type.name}}</b></small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  SENDER DETAILS
+                  <address>
+                    <strong>{{ transfer.being_moved_by.first_name }} {{ transfer.being_moved_by.last_name }}</strong><br>
+                    {{transfer.being_moved_by.employee.branch.name }} Branch<br>
+                    {{transfer.being_moved_by.employee.department}} Branch<br>
+                    Phone Number: {{transfer.being_moved_by.employee.mobile_number }}<br>
+                    Email: {{ transfer.being_moved_by.email }}<br>
+                  </address>
+                </div>
+                <!-- /.col -->
+              {% if transfer.new_custodian is not None %}
+                <div class="col-sm-4 invoice-col">
+                  RECIPIENT DETAILS
+                  <address>
+                    <strong>{{transfer.new_custodian.first_name}} {{ transfer.new_custodian.last_name }} </strong><br>
+                    {{transfer.new_custodian.employee.branch.name}}<br>
+                    {{transfer.new_custodian.employee.department}}<br>
+                    Phone: {{transfer.new_custodian.employee.mobile_number}}<br>
+                    Email: {{ transfer.new_custodian.email }}
+                  </address>
+                </div>
+                {% else %}
+                <div class="col-sm-4 invoice-col">
+                  Assigned To
+                  <address>
+                    <strong>{{transfer.company.name}}</strong><br>
+                    Phone: {{transfer.company.tel}}<br>
+                    Email: {{transfer.company.email}}<br>
+                  </address>
+                </div>
+
+
+                {% endif %}
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b class="">{{ transfer.type.name }} Transfer </b><br>
+                  <b class="text-warning">Transfer ID: </b><b>{{ transfer.reference }}</b><br>
+                  <b class="text-warning">Reason: </b><b> {{transfer.reason_for_transfer }}<br>
+                  {% if asset.is_assigned %}
+                    <b class="text-warning">Asset TAG:</b> <b>{{transfer.asset.tag}}</b><br>
+                  {% else %}
+                    <b class="text-warning">Asset TAG:</b> {{ transfer.asset.tag }}<br>
+                  {% endif %}
+                    <b class="text-warning">Category:</b> {{ transfer.asset.category.name }}<br>
+                    <b class="text-warning">Description:</b>
+                </div>
+                <!-- /.col -->
+              </div>
+            <form method="post">
+              {% csrf_token %}
+              <!-- this row will not appear when printing -->
+              {% if request.user.employee.is_manager and approved is False %}
+              <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="approve" name="approve">
+                    <label class="form-check-label" for="approved"><b>Approve</b></label>
+                  </div>
+              {% elif approved is True %}
+              <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="approve" name="approve" disabled checked>
+                    <label class="form-check-label" for="approved"><b>Approve</b></label>
+                  </div>
+              {% endif %}
+              <div class="row no-print">
+                <div class="col-12">
+                  {% if request.user.employee.is_manager %}
+                    <button type="submit" class="btn btn-success float-right" ><i class="far fa-credit-card"></i>
+                      Approve Transfer
+                    </button>
+                  {% else %}
+                 {% if messages %}
+                    <ul class="">
+                        {% for message in messages %}
+                            {% if message.tags %}
+                                <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                            {{ message }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                    <button type="submit" class="btn btn-success float-right" disabled><i class="far fa-credit-card"></i>
+                      Approve Transfer
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            </form>
+
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}

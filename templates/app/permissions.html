@@ -1,0 +1,138 @@
+{% extends "new_base.html" %}
+{% block title %} User Rights{% endblock %}
+
+{% block table %}
+<div class="content-wrapper ">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>System Rights</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#"></a></li>
+              <li class="breadcrumb-item active">TICK APPROPRATE BOX`</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-lock"></i>  USER RIGHTS<br>
+                    <small class="float-right"> <b></b></small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+
+                <!-- /.col -->
+
+            <form method="post">
+              {% csrf_token %}
+              <!-- this row will not appear when printing -->
+
+              <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="manager" name="manager">
+                    <label class="form-check-label" for="approved"><b>Manager</b></label>
+                  </div>
+
+              <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="procurer" name="procurer">
+                    <label class="form-check-label" for="approved"><b>Procurement Officer</b></label>
+                  </div>
+
+              <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="deployer" name="deployer">
+                    <label class="form-check-label" for="approved"><b>Deployer</b></label>
+                  </div>
+                <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group row">
+                          <div class="col-sm-9">
+                              <select class="form-control select2" id="users" name="users" multiple>
+                                  {% for user in users %}
+                                        <option value="{{user.username}}">{{user.first_name}} {{ user.last_name }}</option>
+                                  {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+              <div class="row no-print">
+                <div class="col-12">
+                  {% if request.user.employee.is_manager %}
+                    <button type="submit" class="btn btn-warning float-right text-succes" ><i class="far fa-user"></i>
+                      Update Rights
+                    </button>
+                  {% else %}
+                    <button type="submit" class="btn btn-success float-right" disabled><i class="far fa-credit-card"></i>
+                      Approve Transfer
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+                <div class="row no-print">
+                    <div class="col-12">
+                         {% if messages %}
+                            <ul class="">
+                                {% for message in messages %}
+                                    {% if message.tags %}
+                                        <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                    {{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+
+{% block js %}
+    $(document).ready(function(){
+
+    })
+    $(document).on("submit", "#configuration", function (e) {
+        var Toast = Swal.mixin({
+               toast: true,
+               position: 'top-end',
+               showConfirmButton: false,
+               timer: 3000
+        });
+    })
+
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+{% endblock %}

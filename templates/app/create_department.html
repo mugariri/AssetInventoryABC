@@ -1,0 +1,153 @@
+{% extends 'new_base.html' %}
+
+{% block title %}
+    Create Department
+{% endblock %}
+
+{% block table %}
+<form method="post" id="department_form">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">Register A Department</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Add New Department</span>
+                      </button>
+                    </div>
+                    <div czlass="line"></div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Department"/>
+<!--                              <h5 id="namecheck" style="color: red;">-->
+<!--                                **name is missing-->
+<!--                              </h5>-->
+                          </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Head of department</label>
+                                      <div class="col-sm-9">
+                                           <select class="form-control select2" name="head" id="head">
+                                              <option selected="selected" disabled>Head of department</option>
+                                              {% for user in users%}
+                                                <option value="{{ user.id}}">{{user.first_name}} {{ user.last_name }}</option>
+                                              {% endfor %}
+                                          </select>
+                                            <h5 id="headcheck" style="color: red;">
+                                              **Reason for request is missing
+                                            </h5>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+                      <div class="row">
+                        {% if messages %}
+                            <ul class="">
+                                {% for message in messages %}
+                                    {% if message.tags %}
+                                        <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                    {{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </div>
+                    <button class="btn btn-warning btn-block" type="submit">submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+   </form>
+{% endblock %}
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+$(document).ready(function () {
+    $("#headcheck").hide();
+    $("#namecheck").hide();
+    function validateName(){
+        if ( $("#name").val() == ""  ){
+
+            $("#namecheck").show();
+            $("#headcheck").html("**name length not supported");
+            $("#namecheck").css("color", "red");
+            $("#name").removeClass('is-valid');
+            $("#name").addClass('is-invalid');
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    function validateHead(){
+        if ( $("#head").val() == null ){
+            $("#headcheck").show();
+            $("#headcheck").html("**kindly provide head");
+            $("#head").css("color", "red");
+            $("#head").removeClass('is-valid');
+            $("#head").addClass('is-invalid');
+            return false;
+        }else{
+
+            return true;
+        }
+    }
+
+<!--    $(document).on("submit", "#department_form", function (e) {-->
+<!--        e.preventDefault();-->
+<!--        validateHead();-->
+<!--        validateName();-->
+<!--        if (validateName()==true && validateName()==true) {-->
+<!--            $.ajax({-->
+<!--                    type: 'POST',-->
+<!--                    url: "/abcassetsmanager/create_departments",-->
+<!--                    data: {-->
+<!--                        head: $("#head").val(),-->
+<!--                        name: $("#name").val(),-->
+<!--                        category: $("#category").val(),-->
+<!--                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),-->
+<!--                        success: function(data){-->
+<!--                            $('#department_form').trigger("reset");-->
+<!--                            document.getElementById("department_form").reset();-->
+<!--                            $("#head option").prop("selected", false).trigger( "change" );-->
+<!--                        }-->
+<!--                    }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+});
+{% endblock %}

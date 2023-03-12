@@ -1,0 +1,171 @@
+{% extends "new_base.html" %}
+{% block title %} Asset Acknowledge {% endblock %}
+
+{% block table %}
+<div class="content-wrapper ">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Asset Transfer</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#"></a></li>
+              <li class="breadcrumb-item active">Acknowledge Custody</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-globe"></i> BANCABC ASSET TRANSACTION<br>
+                    <small class="float-right">Transfer Type: <b>{{transfer.type.name}}</b></small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  Transfered By
+                  <address>
+                    <strong>{{ transfer.being_moved_by.first_name }} {{ transfer.being_moved_by.last_name }}</strong><br>
+                    {{transfer.being_moved_by.employee.branch.name }} Branch<br>
+                    {{rtransfer.being_moved_by.employee.branch.location }}<br>
+                    Phone: {{transfer.being_moved_by.employee.mobile_number }}<br>
+                    Email: {{ transfer.being_moved_by.email }}<br>
+                  </address>
+                </div>
+              {% if transfer.type.name == "External" %}
+                  <div class="col-sm-4 invoice-col">
+                    External Company
+                    <address>
+                      <strong>{{transfer.external_company.name }}</strong>
+                      <br>
+                      Phone: {{transfer.external_company.tel}}<br>
+                      Email: {{ transfer.external_company.email }} <br>
+                      Internal Agent: <br>
+                      <strong>{{transfer.being_moved_by.first_name }} {{ transfer.being_moved_by.last_name }}</strong>
+                    </address>
+                  </div>
+
+              {% else %}
+                <div class="col-sm-4 invoice-col">
+                  Assigned To
+                  <address>
+                    <strong>{{transfer.new_custodian.first_name}} {{ transfer.new_custodian.last_name }}</strong><br>
+                    {{transfer.new_custodian.employee.branch.name}}<br>
+                    {{transfer.new_custodian.employee.branch.location}}<br>
+                    Phone: {{transfer.new_custodian.employee.mobile_number}}<br>
+                    Email: {{ transfer.new_custodian.email }}
+                  </address>
+                </div>
+              {% endif %}
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>Transfer ID: {{ transfer.reference }}</b><br>
+                  <b>Approved By: {{ transfer.approved_by }}</b><br>
+
+                  {% if asset.is_assigned %}
+                    <b>Asset TAG:</b> <b>{{asset.tag}}</b><br>
+                  {% else %}
+                    <b>Asset TAG:</b> {{ transfer.asset.tag }}<br>
+                  {% endif %}
+                    <b>Category:</b> {{ transfer.asset.category.name }}<br>
+                    <b>Description:</b> {{ tranfer.asset.description }}
+                </div>
+                <!-- /.col -->
+              </div>
+            <form method="post">
+              {% csrf_token %}
+              <!-- this row will not appear when printing -->
+              {% if transfer.new_custodian == request.user %}
+                  {% if  transfer.acknowledged_by_receiver == False %}
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" >
+                        <label class="form-check-label" for="acknowledge"><b>Recieved</b></label>
+                      </div>
+                  {% else %}
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" checked disabled>
+                        <label class="form-check-label" for="acknowledge"><b>Recieved</b></label>
+                      </div>
+                  {% endif %}
+              {% elif transfer.type.name == 'External' %}
+                    {% if transfer.returned == False %}
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" >
+                            <label class="form-check-label" for="acknowledge"><b>Asset Returned</b></label>
+                          </div>
+                    {% else %}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" checked disabled>
+                            <label class="form-check-label" for="acknowledge"><b>Asset Returned</b></label>
+                        </div>
+                    {% endif %}
+              {% else %}
+                {% if  transfer.acknowledged_by_receiver == False %}
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" disabled>
+                        <label class="form-check-label" for="acknowledge"><b>Recieved</b></label>
+                      </div>
+                  {% else %}
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="acknowledge" name="acknowledge" checked disabled>
+                        <label class="form-check-label" for="acknowledge"><b>Recieved</b></label>
+                      </div>
+                  {% endif %}
+              {% endif %}
+                <div class="row">
+                        {% if messages %}
+                            <ul class="">
+                                {% for message in messages %}
+                                    {% if message.tags %}
+                                        <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                    {{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </div>
+              <div class="row no-print">
+                <div class="col-12">
+                  {% if transfer.new_custodian == request.user %}
+                    <button type="submit" class="btn btn-success float-right" ><i class="far fa-credit-card"></i>
+                      Acknowledge Transfer
+                    </button>
+                  {% elif transfer.type.name == 'External' %}
+                    <button type="submit" class="btn btn-success float-right" ><i class="far fa-credit-card"></i>
+                        Acknowledge Transfer
+                      </button>
+                  {% else %}
+                    <button type="submit" class="btn btn-success float-right" disabled><i class="far fa-credit-card"></i>
+                      Acknowledge Transfer
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            </form>
+
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}

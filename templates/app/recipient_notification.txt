@@ -1,0 +1,20 @@
+{% autoescape off %}
+Regards {{transfer.approver.first_name}} {{ transfer.approver.last_name}},
+
+An asset has been dispatched to you from {{transfer.being_moved_by.first_name}} {{transfer.being_moved_by.last_name}}
+
+Transaction Details
+ASSET TAG:  {{ transfer.asset.tag }}
+SERIAL TAG: {{ transfer.asset.serial_tag }}
+ASSET TYPE: {{transfer.asset.category.name}}
+COLOUR: {{ transfer.asset.colour.name }}
+REASON :   {{ transfer.reason.name}}
+
+Kindly click link below to acknowledge on receiving asset with the following details:
+LINK: {{ protocol }}://{{ domain }}{% url 'abcassetsmanager:acknowledge' id=transfer.id %}
+
+Sincerely,
+
+BancABC Asset Management System
+
+{% endautoescape %}

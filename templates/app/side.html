@@ -1,0 +1,321 @@
+{% extends 'new_base.html' %}
+{% load static %}
+{% block title %}
+Asset Log
+{% endblock %}
+
+
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning text-center">
+                <h3 class="card-title">Asset Log</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+<!--                        <span class="bs-stepper-circle btn-warning ">1</span>-->
+                        <span class="bs-stepper-label ">Asset Registration</span>
+                          <span class='loading loading-spinner-tiny inline-block'></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <form method="post" id="create_asset">
+                    {% csrf_token %}
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Asset Tag</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="asset_tag" name="asset_tag" placeholder="ABC123456"
+                                   autocapitalize="on" autocomplete="off"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Serial Number</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="serial_number" id="serial_number" placeholder="XXX-XXX-HHHH-9238" autocapitalize="on" autocomplete="off"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label"><i class="menu-icon fa fa-database}"></i>Category</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" name="category" id="category">
+                              <option selected="selected" disabled>Asset Type</option>
+                              {% for category in categories %}
+                                <option value="{{ category}}">{{category.name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Colour</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" placeholder="Black" name="colour" type="text" id="colour" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Brand</label>
+                          <div class="col-sm-9">
+                          <input type="text" class="form-control" placeholder="Brand eg LENOVO" id="brand" name="brand" autocapitalize="on" autocomplete="off">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Model</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" placeholder="Think p53s Gen 2" name="model" type="text" id="model" autocapitalize="on" autocomplete="off" required/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date Purchased</label>
+                          <div class="col-sm-9">
+                          <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" placeholder=" eg 07/2020" name="purchased"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date Received</label>
+                          <div class="col-sm-9">
+                             <input type="date" class="form-control"  placeholder=" eg 07/2020" name="received"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Currency</label>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                                <select class="form-control select2" name="currency" id="currency">
+                                  <option selected="selected" disabled>CURRENCY</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="ZWL">ZWL</option>
+                               </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">Unit Cost</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" placeholder="Price" name="dollars" type="number" id="dollars"  autocomplete="off" min="0" required/>
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="form-control" placeholder="Cents" name="cents" type="number" id="cents"  autocomplete="off" min="0" max="99" required/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">GL Account</label>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <select class="form-control select2" name="gl" id="gl" required>
+                                  <option selected="selected" disabled>GL ACCOUNT</option>
+                                  {% for gl in gls %}
+                                    <option value="{{ gl.id }}">{{gl.name}}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">Allocated User</label>
+                            <div class="col-sm-6">
+                            <select class="form-control select2" name="allocated" id="allocated">
+                              <option selected="selected" disabled>Allocate User</option>
+                              {% for user in users %}
+                                <option value="{{user.id}}">{{user.first_name}} {{user.last_name }}</option>
+                               {% endfor %}
+                           </select>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">GL Account</label>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <select class="form-control select2" name="gl" id="" required>
+                                  <option selected="selected" disabled>GL ACCOUNT</option>
+                                  {% for gl in gls %}
+                                    <option value="{{ gl.id }}">{{gl.name}}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">Support Document</label>
+                            <div class="col-sm-9">
+                                <div class="form-group col-sm-12">
+                                    <div class="input-group">
+                                      <div class="custom-file">
+                                        <input type="file" class="form-control" accept=".pdf"  id="document" name="document">
+                                      </div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                          {% if messages %}
+                              <ul class="">
+                                  {% for message in messages %}
+                                      {% if message.tags %}
+                                          <h4 class="{{ message.tags }} text-center {% if message.tags == 'warning' %} text-danger {% else %} text-success {% endif %} ">
+                                      {{ message }}</h4>
+                                  {% endif %}
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+                        </div>
+                      <button type="submit" class="btn btn-warning">SUBMIT</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+{% endblock %}
+
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+
+
+<!--$(document).on("submit", "#create_asset", function (e) {-->
+<!--    alert('post');-->
+<!--        var Toast = Swal.mixin({-->
+<!--                  toast: true,-->
+<!--                  position: 'top-end',-->
+<!--                  showConfirmButton: false,-->
+<!--                  timer: 3000-->
+<!--        });-->
+<!--        e.preventDefault();-->
+<!--        var asset_tag = $("#asset_tag").val()-->
+<!--        var serial_number = $("#serial_number").val()-->
+<!--        var category = $("#category").val()-->
+<!--        var colour = $("#colour").val()-->
+<!--        var brand = $("#brand").val()-->
+<!--        var model = $("#model").val()-->
+<!--        spec = $("#spec").val()-->
+
+<!--        $.ajax({-->
+<!--            url: "/api/asset_list",-->
+<!--            // on success-->
+<!--                    success: function (response) {-->
+<!--                        if( category != "" && colour != "" && brand != "" ){-->
+
+<!--                                for(var key in response) {-->
+<!--                                    if( asset_tag == response[key].tag ){-->
+<!--                                        Toast.fire({-->
+<!--                                            icon: 'error',-->
+<!--                                            title: asset_tag+' is already in record'-->
+<!--                                        })-->
+<!--                                        return false;-->
+<!--                                    }else if(serial_number == response[key].serial_tag){-->
+<!--                                        Toast.fire({-->
+<!--                                            icon: 'error',-->
+<!--                                            title: serial_number+' is already in record'-->
+<!--                                        })-->
+<!--                                        return false;-->
+<!--                                    }else{-->
+<!--                                        $.ajax({-->
+<!--                                            type: 'POST',-->
+<!--                                            url: "/abcassetsmanager/assets_manager",-->
+<!--                                            data: {-->
+<!--                                                asset_tag: asset_tag,-->
+<!--                                                serial_number: serial_number,-->
+<!--                                                category : category,-->
+<!--                                                brand : brand,-->
+<!--                                                colour: colour,-->
+<!--                                                spec: spec,-->
+<!--                                                model: model,-->
+<!--                                                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),-->
+<!--                                                success: function(data){-->
+
+<!--                                                           $('#create_asset').trigger("reset");-->
+<!--                                                            $("#category option").prop("selected", false).trigger( "change" );-->
+
+<!--                                                           Toast.fire({-->
+<!--                                                            icon: 'success',-->
+<!--                                                            title: 'Asset was successfully created'-->
+<!--                                                        })-->
+<!--                                                }-->
+<!--                                            }-->
+<!--                                        })-->
+<!--                                        break;-->
+<!--                                    }-->
+<!--                                }-->
+<!--                        }else{-->
+<!--                             Toast.fire({-->
+<!--                                  icon: 'error',-->
+<!--                                  title: 'Fill in all the fields'-->
+<!--                             })-->
+<!--                        }-->
+<!--                    },-->
+<!--                    // on error-->
+<!--                    error: function (response) {-->
+<!--                        // alert the error if any error occured-->
+<!--                        console.log(response.responseJSON.errors)-->
+<!--                    }-->
+<!--        });-->
+<!--    }-->
+<!--)-->
+{% endblock %}

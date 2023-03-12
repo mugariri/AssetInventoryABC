@@ -1,0 +1,78 @@
+{% extends 'dashboard.html' %}
+{% block title %}DEPLOY {% endblock %}
+{% block page_content %}
+<div class="col-lg-12">
+    <div class="card">
+    <!--                                    <div class="card-header">Credit Card</div>-->
+        <div class="card-body">
+            <div class="card-title">
+                <h3 class="text-center title-2">Deployment Form</h3>
+            </div>
+            <hr>
+            <form action="" method="post" novalidate="novalidate">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="cc-exp" class="control-label mb-1">ASSET TAG</label>
+                            <input id="tag" name="tag" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration"
+                                data-val-cc-exp="Please enter a valid month and year" placeholder=""
+                                autocomplete="off">
+                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="x_card_code" class="control-label mb-1">NEW AD COMPUTER NAME</label>
+                        <div class="input-group">
+                            <input id="computer" name="computer" type="tel" class="form-control cc-cvc" value="" data-val="true" data-val-required="Please enter the security code"
+                                data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="cc-exp" class="control-label mb-1">NEW CUSTODIAN</label>
+                            <input id="custodian" name="custodian" type="tel" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration"
+                                data-val-cc-exp="Please enter a valid month and year" placeholder=""
+                                autocomplete="off">
+                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="x_card_code" class="control-label mb-1">OLD AD COMPUTER NAME (Repairs Only)</label>
+                        <div class="input-group">
+                            <input id="old_computer" name="old_computer" type="tel" class="form-control cc-cvc" value="" data-val="true" data-val-required="Please enter the security code"
+                                data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-12">
+                        <div class="form-group">
+                              {% if messages %}
+                                <ul class="">
+                                    {% for message in messages %}
+                                        {% if message.tags %}
+                                            <h4 class="text-center text-{{message.tags}}">
+                                            {{ message }}</h4>
+                                        {% endif %}
+                                    {% endfor %}
+	                            </ul>
+                              {% endif %}
+                        </div>
+                    </div>
+                </div>
+                    <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+    <!--                                                    <i class="fa fa-lock fa-lg"></i>&nbsp;-->
+                        <span id="payment-button-amount">SUBMIT</span>
+                        <span id="payment-button-sending" style="display:none;">Sending…</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

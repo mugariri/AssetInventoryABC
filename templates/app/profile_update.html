@@ -1,0 +1,126 @@
+{% extends 'authbase.html' %}
+ {% block title %}
+     Profile Update
+{% endblock %}
+{% block form_header %}
+
+{% endblock %}
+{% block size %}8{% endblock %}
+{% block form_body %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header  text-center bg-warning">
+                <h3 class="card-title">Profile Update</h3>
+              </div>
+              <div class="card-body ">
+
+                    <!-- your steps content here -->
+                      <form method="post" id="create_asset">
+                    {% csrf_token %}
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Work Address</label>
+                            <div class="col-sm-9">
+                                <textarea class="col-6" id="work_address" name="work_address" style="border-radius:5px;width: 100%; height: 150px;padding: 12px 20px;box-sizing: border-box; border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;  font-size: 16px; resize: none;" rows="8"></textarea>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Work Branch</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" name="branch" id="">
+                              <option selected="selected" disabled>Select Branch</option> >
+                              {% for branch in branches %}
+                                <option value="{{ branch.name}}">{{ branch.name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Department</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" name="department" id="department">
+                              <option selected="selected" disabled>Choose Your Department</option >
+                              {% for department in departments %}
+                                <option value="{{ department.name}}">{{department.name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Line Manager</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" name="line_manager" id="line_manager">
+                              <option selected="selected" disabled>Choose Your Line Manager</option >
+                              {% for user in users %}
+                                <option value="{{ user.username}}">{{user.username}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                        <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Phone Number</label>
+                          <div class="col-sm-9">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"  placeholder="+263 785 598 749" name="phone" autocomplete="off"/>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Extension</label>
+                          <div class="col-sm-9">
+                            <input class="form-control"  name="extension" placeholder="9299" type="text" id="extension" autocomplete="off"  />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 {% if messages %}
+                    <ul class="">
+                        {% for message in messages %}
+                            {% if message.tags %}
+                                <li class="{{ message.tags }} text-center text-{{message.tags }}">
+                            {{ message }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                      <button type="submit" class="btn btn-warning">SUBMIT</button>
+                        </form>
+
+                  </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+{% endblock %}

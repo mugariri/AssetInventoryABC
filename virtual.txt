@@ -1,0 +1,15 @@
+create environment
+python -m venv venv
+
+activate the environment
+<virtual-environment-name>/Scripts/activate.bat
+in cmd
+venv\Scripts\activate
+
+install the requirements
+
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+deactivate the environment
+deactivate

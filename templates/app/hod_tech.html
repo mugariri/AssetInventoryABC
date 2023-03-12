@@ -1,0 +1,332 @@
+{% extends "new_base.html" %}
+{% block title %} Hardware Request Information{% endblock %}
+
+{% block td %}
+<div class="content-wrapper " xmlns="http://www.w3.org/1999/html">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <div class="breadcrumb float-sm-right justify-content-center bg-warning">
+              <div class="form-check bg-warning">
+                <h4>
+                    <i class=""></i>BANCABC HARDWARE REQUEST<br><br>
+                </h4>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content" >
+      <div class="container-fluid">
+        <div class="container">
+            <form method="post" >
+                {% csrf_token %}
+                          <div class="row">
+                            <div class="col-lg">                                  <!-- Message input -->
+                                  <div class="form-outline mb-4">
+                                        <label class="form-label" for="form4Example1">REQUESTING USER</label>
+                                       <p> {{ req.requisitioner.first_name }} {{ req.requisitioner.last_name }}</p>
+                                  </div>
+                                  <!-- Message input -->
+                                  <div class="form-outline mb-4">
+                                        <label class="form-label" for="form4Example1">REASON FOR REQUEST</label>
+                                        <p>{{ req.reason_for_request }}</p>
+                                  </div>
+                                  <div class="form-outline mb-4">
+                                        <label class="form-label" for="form4Example1">LINE APPROVAL</label>
+                                        <p>{{ req.line_manager.first_name }} {{ req.line_manager.last_name }}</p>
+                                  </div>
+                                  <div class="form-outline mb-4">
+                                        <label class="form-label" for="form4Example1">APPROVED BY HEAD</label>
+                                      <button class="form-control {% if req.authorizer_accepted == True %} bg-success {% endif %} {% if req.authorizer_rejected == True %} bg-danger {% endif %}" type="button" value="" disabled>{% if req.authorizer_accepted == True %} APPROVED BY {{ req.authorized_by  }} {% endif %} {% if req.authorizer_rejected == True %} REJECTED  BY {{ req.authorized_by  }} {% endif %}</button>
+                                  </div>
+                                  <div class="form-outline mb-4">
+                                        <label class="form-label" for="form4Example1">REQUIRED SPECIFICATONS</label>
+                                      <textarea class="mt-4" style="width:100%; border-radius: 5px;" name="justification" rows=8 placeholder="{% if req.infrastructure_manager_reason_for_action is not None %} {{req.infrastructure_manager_reason_for_action}} {% else %} Provide required a specification {% endif %}" value="" required {% if request.user.employee.IN_manager == False %} disabled {% endif %}></textarea>
+                                  </div>
+
+                                  <!-- Checkbox -->
+                                  <div class="form-check d-flex  mb-4">
+                                    <input type="checkbox" class="form-check-input" id="replace" name="replace" {% if req.replacement == True %} checked {% endif %} disabled {% if req.}>
+                                    <label class="form-check-label" for="form4Example4">
+                                      REPLACEMENT
+                                    </label>
+                                  </div>
+
+                            </div>
+                            <div class="col-lg ">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form4Example1">DESIGNATION</label>
+                                    <p>{{req.designation}}</p>
+                                  </div>
+                                <label class="form-check-label" for="form4Example4">
+                                      REQUEST JUSTIFICATION
+                                </label><br><br>
+                                <p rows="8">
+                                    {{ req.justification_for_purchase }}
+                                </p><br><br><br><br><br><br><br><br><br>
+
+
+
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input"  {% if req.infrastructure_manager_accepted == True %} checked disabled {% endif %} {% if req.infrastructure_manager_rejected == True %} disabled {% endif %}>
+                                    <label class="form-check-label" for="acknowledge"><b>Approve Request</b></label>
+                                  </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input"  {% if req.infrastructure_manager_rejected == True %} checked disabled {% endif %} {% if req.infrastructure_manager_accepted == True %} disabled {% endif %} >
+                                    <label class="form-check-label" for="acknowledge"><b>Revoke Request</b></label>
+                                </div>
+
+                            </div>
+                                <div class="row">
+                          {% if messages %}
+                              <ul class="">
+                                  {% for message in messages %}
+                                      {% if message.tags %}
+                                          <h4 class="{{ message.tags }} text-center {% if message.tags == 'warning' %} text-danger {% else %} text-success {% endif %} ">
+                                      {{ message }}</h4>
+                                  {% endif %}
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+                        </div>
+                              <button type="submit" class="btn btn-warning">
+                                Submit Request
+                              </button>
+                          </div>
+                        </div>
+          </form>
+      </div><!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+{% block table %}
+    <form method="post" id="department_form">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">HEAD OF TECHNOLOGY SERVICES</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">/</span>
+                        <span class="bs-stepper-label">Resource Request Details</span>
+                      </button>
+                    </div>
+                    <div czlass="line"></div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        <hr/>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Requested By</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.requisitioner.first_name}} {{ req.requisitioner.last_name }}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Designation</label>
+                                      <div class="col-sm-9">
+                                           <h4>{{req.designation }}</h4>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Reason For Request</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.reason_for_request}}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Requested Item</label>
+                                      <div class="col-sm-9">
+                                           <h4>{{req.device_requested}}</h4>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+                        <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date Initiated</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.date_logged}}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Justification For Request</label>
+                                      <div class="col-sm-7">
+                                           <h5>{{req.justification_for_purchase}}</h5>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+                    <hr/>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Line Manager's Comments</label>
+                                <h5>{{req.line_manager_comment}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Line Manager Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" {% if req.line_manager_approved == True %} checked disabled {% else %} {% endif %} {% if req.line_manager_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input"  {% if req.line_manager_rejected == True  %} checked disabled {% else %} {% endif %} {% if req.line_manager_approved == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Head Of Department's Comments</label>
+                                <h5>{{req.authorizer_justification}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Head Of Department's  Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" {% if req.authorizer_accepted == True %} checked disabled {% else %} {% endif %} {% if req.authorizer_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" {% if req.authorizer_rejected  == True  %} checked disabled {% else %} {% endif %} {% if req.authorizer_accepted == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><hr >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Resource Manager's Comments</label>
+                                <h5>{{req.infrastructure_manager_reason_for_action}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Resource Manager's  Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" {% if req.infrastructure_manager_accepted == True %} checked disabled {% else %} {% endif %} {% if req.infrastructure_manager_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input"  {% if req.infrastructure_manager_rejected  == True  %} checked disabled {% else %} {% endif %} {% if req.infrastructure_manager_accepted == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <hr >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Head Of TECHNOLOGY Comments</label>
+								{% if req.head_of_technology_services_reason_for_action != None %}
+									<h5>{{req.head_of_technology_services_reason_for_action}}</h5>
+								{% else %}
+									<textarea class="col-12" id="justification" name="justification" style="border-radius:5px;width: 100%; height: 150px;padding: 12px 20px;box-sizing: border-box; border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;  font-size: 16px; resize: none;" rows="8" placeholder="{{req.head_of_technology_services_reason_for_action}}" required></textarea>
+								{% endif %}
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Resource Manager's  Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="approve" name="approve" {% if req.head_of_technology_services_accepted == True %} checked disabled {% else %} {% endif %} {% if req.head_of_technology_services_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="revoke" name="revoke" {% if req.head_of_technology_services_rejected  == True  %} checked disabled {% else %} {% endif %} {% if req.head_of_technology_services_accepted == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                        {% if messages %}
+                            <ul class="">
+                                {% for message in messages %}
+                                    {% if message.tags %}
+                                        <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                    {{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </div>
+                        {% if req.head_of_technology_services_accepted == True or req.head_of_technology_services_rejected  == True %} {% else %}
+                    <button class="btn btn-warning btn-block" type="submit">submit</button>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+   </form>
+{% endblock %}
+
+{% block js %}
+    $(document).ready(function () {
+            $(document).on("submit", "#aprovalform", function (e) {
+
+            });
+    });
+
+
+{% endblock %}

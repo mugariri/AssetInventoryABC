@@ -1,0 +1,187 @@
+{% extends 'new_base.html' %}
+
+{% block title %}
+    Department Requests
+{% endblock %}
+
+{% block table %}
+<form method="post" id="department_form">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning ">
+                <h3 class="card-title text-center">DEPARTMENT REQUEST</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">/</span>
+                        <span class="bs-stepper-label">Resource Request Details</span>
+                      </button>
+                    </div>
+                    <div czlass="line"></div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Requested By</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.requisitioner.first_name}} {{ req.requisitioner.last_name }}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Designation</label>
+                                      <div class="col-sm-9">
+                                           <h4>{{req.designation }}</h4>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Reason For Request</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.reason_for_request}}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Requested Item</label>
+                                      <div class="col-sm-9">
+                                           <h4>{{req.device_requested}}</h4>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div><div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date Initiated</label>
+                          <div class="col-sm-9">
+                              <h4>{{req.date_logged}}</h4>
+                           </div>
+
+                        </div>
+                      </div>
+                         <div class="col-md-6">
+                               <div class="form-group row">
+                                      <label class="col-sm-3 col-form-label">Justification For Request</label>
+                                      <div class="col-sm-7">
+                                           <h5>{{req.justification_for_purchase}}</h5>
+                                      </div>
+                                 </div>
+                          </div>
+                    </div>
+					<hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Line Manager's Comments</label>
+                                <h5>{{req.line_manager_comment}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Line Manager Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" {% if req.line_manager_approved == True %} checked disabled {% else %} {% endif %} {% if req.line_manager_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input"  {% if req.line_manager_rejected == True  %} checked disabled {% else %} {% endif %} {% if req.line_manager_approved == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Head Of Department's Comments</label>
+                                {% if req.authorizer_justification != None %}
+                                    <h5>{{req.authorizer_justification}}</h5>
+                                {% else %}
+                                    <textarea name="justification" id="justification" style="border-radius:5px;width: 100%; height: 150px;padding: 12px 20px;box-sizing: border-box; border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;  font-size: 16px; resize: none;" rows="8" required placeholder="{{req.authorizer_justification}}" ></textarea>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Head Of Department's  Action</label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="approve" name="approve" {% if req.authorizer_accepted == True %} checked disabled {% else %} {% endif %} {% if req.authorizer_rejected == True  %} disabled {% else %} {% endif %} >
+                                        <label class="form-check-label"><b> Approve Request</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="revoke" name="revoke" {% if req.authorizer_rejected  == True  %} checked disabled {% else %} {% endif %} {% if req.authorizer_accepted == True %}  disabled {% else %} {% endif %}>
+                                        <label class="form-check-label" ><b>Revoke Request</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                        {% if messages %}
+                            <ul class="">
+                                {% for message in messages %}
+                                    {% if message.tags %}
+                                        <li class="{{ message.tags }} text-center text-{{message.tags}}">
+                                    {{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </div>
+					  {% if req.authorizer_accepted  == True or req.authorizer_rejected  == True %} {% else %}
+                            <button class="btn btn-warning btn-block" type="submit">submit</button>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+   </form>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+{% extends 'dashboard.html' %}
+{% block title %}DEPLOYMENT {% endblock %}
+{% block page_content %}
+<div class="col-lg-12">
+    <div class="card">
+    <!--                                    <div class="card-header">Credit Card</div>-->
+        <div class="card-body">
+            <div class="card-title">
+                <h3 class="text-center title-2">Deployment Details</h3>
+            </div>
+            <hr>
+            <form action="" method="post" novalidate="novalidate">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="cc-exp" class="control-label mb-1">ABC ASSET TAG</label>
+                            <h4>{{dep.abc_asset_tag}}</h4>
+                            <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="x_card_code" class="control-label mb-1">New AD Computer Name</label>
+                        <h4>{{dep.new_active_directory_name}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="cc-exp" class="control-label mb-1">New Custodian Of Machine</label>
+                            <h4>{{dep.custodian}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="x_card_code" class="control-label mb-1">Old AD Computer Name</label>
+                        <h4>{{dep.old_active_directory_name}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="cc-exp" class="control-label mb-1">Deployed By</label>
+                            <h4>{{dep.configured_by}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="x_card_code" class="control-label mb-1">Date Deployed</label>
+                        <h4>{{dep.date_configured}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <button {% if dep.cleared == False %} class="btn btn-warning" {% else %} class="btn btn-success" {% endif %}>{% if dep.cleared == False %} UNCLEARED {% else %} CLEARED{% endif %}</button>
+                        </div>
+                    </div>
+                    {% if dep.cleared == True %}
+                        <div class="col-6">
+                            <label for="x_card_code" class="control-label mb-1">Cleared By</label>
+                            <h4>{{dep.cleared_by}}</h4>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="row text-center">
+                    {% if dep.cleared == False and dep.configured_by == request.user %}
+                        <div class="col-12">
+                            <a class="btn btn-warning"  href="{% url 'application:update' id=dep.id %}">Update Record</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

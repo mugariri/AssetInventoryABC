@@ -1,0 +1,115 @@
+{% extends 'new_base.html' %}
+{% load static %}
+{% block title %}
+Detailed Date Report
+{% endblock %}
+
+
+{% block table %}
+<!--    <div class="card-header">-->
+<!--        <h3 class="card-title">DataTable with default features</h3>-->
+<!--    </div>-->
+<!--              &lt;!&ndash; /.card-header &ndash;&gt;-->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead class="bg-warning">
+                <tr>
+                    <th>Asset Tag</th>
+                    <th>Assigned User</th>
+                    <th>Serial Tag</th>
+                    <th>Asset Class</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Crn</th>
+                    <th>Unit Cost</th>
+                    <th>PDate</th>
+                    <th>RDate</th>
+                    <th>Allocated User</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for asset in assets %}
+                {% if asset.assigned_to  == None%}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-primary">UNALLOCATED</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.asset_class.name }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{ asset.currency }}</td>
+                    <td>{{asset.price}}</td>
+                    <td>{{asset.purchase_date.date}}</td>
+                    <td>{{asset.received_date.date }}</td>
+                    <td>{{asset.allocated_user.first_name }} {{asset.allocated_user.last_name }}</td>
+                  </tr>
+                {% elif asset.custodian_user == asset.assigned_to %}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-success">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.asset_class.name }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{ asset.currency }}</td>
+                    <td>{{asset.price}}</td>
+                    <td>{{asset.purchase_date.date}}</td>
+                    <td>{{asset.received_date.date}}</td>
+                    <td>{{asset.allocated_user.first_name }} {{asset.allocated_user.last_name }}</td>
+                  </tr>
+                {% elif asset.custodian_user != asset.assigned_to %}
+                    <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-danger">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.asset_class.name }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{ asset.currency }}</td>
+                    <td>{{asset.price}}</td>
+                    <td>{{asset.purchase_date.date}}</td>
+                    <td>{{asset.received_date.date}}</td>
+                    <td>{{asset.allocated_user.first_name }} {{asset.allocated_user.last_name }}</td>
+                  </tr>
+                {% else %}
+                    <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-primary">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.asset_class.name }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{ asset.currency }}</td>
+                    <td>{{asset.price}}</td>
+                    <td>{{asset.purchase_date.date}}</td>
+                    <td>{{asset.received_date.date}}</td>
+                    <td>{{asset.allocated_user.first_name }} {{asset.allocated_user.last_name }}</td>
+                  </tr>
+                {% endif %}
+            {% endfor %}
+                  </tbody>
+                  <tfoot class="bg-warning">
+                  <tr>
+                    <th>Asset Tag</th>
+                    <th>Assigned User</th>
+                    <th>Serial Tag</th>
+                    <th>Asset Class</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Crn</th>
+                    <th>Unit Cost</th>
+                    <th>PDate </th>
+                    <th>RDate </th>
+                    <th>Allocated User</th>
+                </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'new_base.html' %}
+{% block title %}
+   Out For Repairs
+{% endblock %}
+{% block table %}
+<!--    <div class="card-header">-->
+<!--        <h3 class="card-title">DataTable with default features</h3>-->
+<!--    </div>-->
+<!--              &lt;!&ndash; /.card-header &ndash;&gt;-->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Asset Tag</th>
+                    <th>Company</th>
+                    <th>Initiated By</th>
+                    <th>Approver</th>
+                    <th>Type</th>
+                    <th>Reason For Transfer</th>
+                    <th>Time Initiated</th>
+                    <th>Approved</th>
+                    <th>Received </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for transfer in transfers %}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:return_asset' id=transfer.id %}" >{{ transfer.asset }}</a></td>
+                     <td>{{ transfer.company }}</td>
+                    <td>{{ transfer.being_moved_by }}</td>
+                    <td>{{ transfer.approved_by }}</td>
+                    <td>{{ transfer.type.name }}</td>
+                    <td>{{ transfer.reason }}</td>
+                    <td>{{ transfer.date_initiated.date }}</td>
+                    <td>
+                      {% if transfer.is_approved is True %}
+                          <button class="btn btn-success" disabled>Approved</button>
+                          {% else %}
+                          <div class="form-check">
+                                <button class="btn btn-warning btn-lg" disabled>Pending</button>
+                          </div>
+                          {% endif %}
+                    </td>
+                    <td>
+                     {% if transfer.type.name == "Internal" %}
+                      {% if transfer.acknowledged_by_receiver is True %}
+                          <button class="btn btn-success" disabled>Received</button>
+                          {% else %}
+                          <div class="form-check">
+                                <button class="btn btn-warning btn-lg" disabled>Pending</button>
+                          </div>
+                          {% endif %}
+                      {% else %}
+                        {% if transfer.returned is True %}
+                          <button class="btn btn-info" disabled>Returned</button>
+                        {% else %}
+                          <div class="form-check">
+                                <button class="btn btn-danger btn-lg" disabled>Repairs</button>
+                          </div>
+                        {% endif %}
+                      {% endif %}
+                    </td>
+                  </tr>
+            {% endfor %}
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Asset Tag</th>
+                    <th>Company</th>
+                    <th>Initiated By</th>
+                    <th>Approver</th>
+                    <th>Type</th>
+                    <th>Reason For Transfer</th>
+                    <th>Time Initiated</th>
+                    <th>Approved</th>
+                    <th>Received</th>
+                </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+{% endblock %}

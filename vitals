@@ -1,0 +1,28 @@
+python manage.py invoke app.apis.send_notification --p subject="TEST" message="Mari yangu" receiver=dmugariri@bancabc.co.zw
+
+from threading import Thread
+from time import sleep
+
+def threaded_function(arg):
+    for i in range(arg):
+        print("running")
+        sleep(1)
+
+
+if __name__ == "__main__":
+    thread = Thread(target = threaded_function, args = (10, ))
+    thread.start()
+    thread.join()
+    print("thread finished...exiting")
+
+
+
+waitress-serve --listen=*:8000 myapp.wsgi:application
+python server.py waitress-serve --listen=*:8000 myapp.wsgi:application
+
+
+          1 : LAPTOP
+
+          2 : DESKTOP
+ Enter Category: 1
+Failed to create Asset Tag: {'tag': ['asset with this tag already exists.']}

@@ -1,0 +1,83 @@
+{% extends 'new_base.html' %}
+{% block title %}
+
+    {{branch.name}}  {{dept.name}} Assets Report
+{% endblock %}
+{% block table %}
+<!--    <div class="card-header">-->
+<!--        <h3 class="card-title">DataTable with default features</h3>-->
+<!--    </div>-->
+<!--              &lt;!&ndash; /.card-header &ndash;&gt;-->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead class="bg-warning">
+                <tr>
+                    <th>Asset Tag</th>
+                    <th>Assigned User</th>
+                    <th>Serial Tag</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Registered By</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for asset in assets %}
+                {% if asset.assigned_to  == None%}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-primary">UNALLOCATED</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{asset.registered_by.first_name }} {{asset.registered_by.last_name }}</td>
+                  </tr>
+                {% elif asset.custodian_user == asset.assigned_to %}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-success">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{asset.registered_by.first_name }} {{asset.registered_by.last_name }}</td>
+                  </tr>
+                {% elif asset.custodian_user != asset.assigned_to %}
+                    <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-danger">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{asset.registered_by.first_name }} {{asset.registered_by.last_name }}</td>
+                  </tr>
+                {% else %}
+                    <tr>
+                    <td><a href="{% url 'abcassetsmanager:asset_details' asset_id=asset.id %}">{{ asset.tag }}</a></td>
+                     <td class="text-primary">{{ asset.assigned_to }}</td>
+                    <td>{{ asset.serial_tag }}</td>
+                    <td>{{ asset.category.name }}</td>
+                    <td>{{ asset.brand }}</td>
+                    <td>{{asset.model}}</td>
+                    <td>{{asset.registered_by.first_name }} {{asset.registered_by.last_name }}</td>
+                  </tr>
+                {% endif %}
+            {% endfor %}
+                  </tbody>
+                  <tfoot class="bg-warning">
+                  <tr>
+                    <th>Asset Tag</th>
+                    <th>Assigned User</th>
+                    <th>Serial Tag</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Registered By</th>
+                </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+{% endblock %}

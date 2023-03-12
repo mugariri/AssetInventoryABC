@@ -1,0 +1,55 @@
+{% load static %}
+<head>
+
+     <link rel="stylesheet" href="{% static 'app/plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app/plugins/daterangepicker/daterangepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+  <!-- Bootstrap4 Duallistbox -->
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{% static 'app/plugins/toastr/toastr.min.css' %}">
+    <!-- plugins:css -->
+<!--  <link rel="stylesheet" href="{% static 'app/dist/css/adminlte.min.css' %}">-->
+  <link rel="stylesheet" href="{% static 'app/vendors/feather/feather.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/simple-line-icons/css/simple-line-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{% static 'app/vendors/select2/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'app/css/vertical-layout-light/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'app/images/yellow.png' %}" />
+  <title> {% block title %}{% endblock %}</title>
+  <!-- endinject -->
+</head>
+<body class="">
+  {% block body %}
+
+  {% endblock %}
+<script>
+  {% block js %}
+
+  {% endblock %}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+        crossorigin="anonymous"></script>
+<script src="{% static 'jspdf.debug.js' %}"></script>
+<script src="{% static 'jspdf.min.js' %}"></script>
+<script src="{% static 'app/jspdf/acroform.js' %}"></script>
+<script src="{% static 'app/jspdf/acroform.js' %}"></script>
+<script src="{% static 'app/jspdf/addhtml.js' %}"></script>
+<script src="{% static 'app/jspdf/addimage.js' %}"></script>
+<script src="{% static 'app/jspdf/annotations.js' %}"></script>
+<script src="{% static 'app/jspdf/autoprint.js' %}"></script>
+<script src="{% static 'app/jspdf/canvas.js' %}"></script>
+</body>

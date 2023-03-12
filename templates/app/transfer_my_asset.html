@@ -1,0 +1,156 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  Transfer My Asset
+{% endblock %}
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">Asset Transfer Log</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Initiate Transaction</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                  <form method="post" id="transaction">
+                    {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                   <div class="form-group row">
+                                      <label class="col-sm-4 col-form-label"><b>Transfer Type</b></label>
+                                      <div class="col-sm-6">
+                                        <h1 class="text-success">INTERNAL</h1>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="col-md-6">-->
+<!--                            <div class="form-group row">-->
+<!--                                <div class="form-group">-->
+<!--                                   <div class="form-group row">-->
+<!--                                      <label class="col-sm-2 col-form-label"><b>Reason</b></label>-->
+<!--                                       {% for reason in reasons %}-->
+<!--                                      <div class="col-sm-3">-->
+<!--                                        <div class="form-check">-->
+<!--                                          <label class="form-check-label">-->
+<!--                                            <input type="radio" class="form-check-input" name="reason" value="{{reason.name}}" id="reason" required>-->
+<!--                                            {{ reason.name }}-->
+<!--                                          </label>-->
+<!--                                        </div>-->
+<!--                                      </div>-->
+<!--                                       {% endfor %}-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Reason For Transfer</b></label>
+                                  <input type="text" class="form-control" id="reason_for_transfer" name="reason_for_transfer" placeholder="eg Addition "
+                                   autocapitalize="on" autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>Transaction Assets</b></label>
+                                    <select class="form-control select2" data-placeholder="Select Assets" style="width: 100%;" name="assets" id="assets" multiple>
+                                    {% for asset in assets %}
+                                        {% if asset.custodian_user == request.user %}
+                                                <option value="{{asset.id}}" class="form-control">{{asset.tag}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="form-group">
+                                  <label><b>User Assigned</b></label>
+                                  <select class="form-control select2" style="width: 100%;" name="user" id="user">
+                                    <option disabled selected>Select Assignee</option>
+                                    {% for user in users %}
+                                      <option value="{{user.username}}" class="form-control"   >{{user.first_name}} {{ user.last_name}} </option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="form-group">
+                              <label><b>Request Authorization From Manager</b></label>
+                              <select class="form-control select2" data-placeholder="Select Manager" style="width: 100%;" name="approver" id="approver" >
+                                  <option disabled selected>Select Line Manager</option>
+                                {% for user in managers %}
+
+                                    <option value="{{user.username}}" class="form-control">{{user.first_name}} {{ user.last_name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                      <div class="row">
+                          {% if messages %}
+                              <ul class="">
+                                  {% for message in messages %}
+                                      {% if message.tags %}
+                                          <h4 class="{{ message.tags }} text-center {% if message.tags == 'warning' %} text-danger {% else %} text-success {% endif %} ">
+                                      {{ message }}</h4>
+                                  {% endif %}
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+                        </div>
+                      <button class="btn btn-warning" type="submit">Initiate Transfer</button>
+
+                  </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+
+{% endblock %}

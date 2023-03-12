@@ -1,0 +1,89 @@
+{% extends 'new_base.html' %}
+
+{% block title %}
+    Create Category
+{% endblock %}
+
+{% block table %}
+<form method="post">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning text-center">
+                <h3 class="card-title">Create Category</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Create New Category</span>
+                      </button>
+                    </div>
+                    <div czlass="line"></div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Category Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="" autocomplete="off"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                            <select class="form-control select2" name="dept" id="dept">
+                              <option selected="selected" disabled>Department In Charge</option >
+                              {% for dept in depts %}
+                                <option value="{{dept.name }}">{{ dept.name }}</option>
+                              {% endfor %}
+                            </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Sub Department</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" name="sub_dept" id="sub_dept">
+                              <option selected="selected" disabled>Sub-Department In Charge</option >
+                              {% for sub_dept in sub_depts %}
+                                <option value="{{sub_dept.name }}">{{sub_dept.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <button class="btn btn-warning" type="submit">submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+   </form>
+{% endblock %}
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+{% endblock %}

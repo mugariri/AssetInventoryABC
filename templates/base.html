@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %} {% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'app/plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app/plugins/daterangepicker/daterangepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'app/plugins/select2/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+  <!-- Bootstrap4 Duallistbox -->
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{% static 'app/plugins/toastr/toastr.min.css' %}">
+    <!-- plugins:css -->
+<!--  <link rel="stylesheet" href="{% static 'app/dist/css/adminlte.min.css' %}">-->
+  <link rel="stylesheet" href="{% static 'app/vendors/feather/feather.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/simple-line-icons/css/simple-line-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{% static 'app/vendors/select2/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'app/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static 'app/images/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'app/select2/css/select2.min.css' %}">
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start  bg-warning">
+        <div class="me-3">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+        <div>
+          <a class="navbar-brand brand-logo" href="{% url 'app:dashboard' %}">
+            <img src="{% static 'app/images/logo2.png' %}" alt="logo" />
+          </a>
+          <a class="navbar-brand brand-logo-mini" href="{% url 'app:dashboard' %}">
+            <img src="{% static 'app/images/logo-mini.svg' %}" alt="logo" />
+          </a>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-top bg-warning">
+        <ul class="navbar-nav">
+          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">{{ greetings }}, <span class="text-black fw-bold">{{ request.user.first_name }} {{ request.user.last_name }}</span></h1>
+            <h3 class="welcome-sub-text">Welcome to the <b>BancABC</b> Asset Management Portal</h3>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <form class="search-form" action="#">
+              <i class="icon-search"></i>
+              <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+            </form>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+              <i class="icon-mail icon-lg"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">
+              <a class="dropdown-item py-3 border-bottom">
+                <p class="mb-0 font-weight-medium float-left">You have 4 new notifications </p>
+                <span class="badge badge-pill badge-primary float-right">View all</span>
+              </a>
+              <a class="dropdown-item preview-item py-3">
+                <div class="preview-thumbnail">
+                  <i class="mdi mdi-alert m-auto text-primary"></i>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal text-dark mb-1">Application Error</h6>
+                  <p class="fw-light small-text mb-0"> Just now </p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item py-3">
+                <div class="preview-thumbnail">
+                  <i class="mdi mdi-settings m-auto text-primary"></i>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal text-dark mb-1">Settings</h6>
+                  <p class="fw-light small-text mb-0"> Private message </p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item py-3">
+                <div class="preview-thumbnail">
+                  <i class="mdi mdi-airballoon m-auto text-primary"></i>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject fw-normal text-dark mb-1">New user registration</h6>
+                  <p class="fw-light small-text mb-0"> 2 days ago </p>
+                </div>
+              </a>
+            </div>
+          </li>
+
+        {% if aw.count > 0 %}
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="icon-bell"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="countDropdown">
+              <a class="dropdown-item py-3" href="{% url 'app:awaiting_approval' %}">
+                <p class="mb-0 font-weight-medium float-left">{{aw.count}}  Pending Approvals </p>
+                <span class="badge badge-pill badge-primary float-right">View all</span>
+              </a>
+              {% for a in aw %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item" href="{% url 'app:asset_transfer' id=a.id %}">
+                  <div class="preview-thumbnail">
+<!--                    <img src="{% static 'app/images/faces/face10.jpg' %}" alt="image" class="img-sm profile-pic">-->
+                  </div>
+                  <div class="preview-item-content flex-grow py-2">
+                    <p class="preview-subject ellipsis font-weight-medium text-dark">{{a.being_moved_by.first_name}} {{a.being_moved_by.last_name}} </p>
+                    <p class="fw-light small-text mb-0"> {{a.reference}}</p>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </li>
+        {% endif %}
+
+          <li class="nav-item dropdown d-none d-lg-block user-dropdown">
+            <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+              <img class="img-xs rounded-circle" src="{% static 'app/images/faces/face8.jpg' %}" alt="Profile image"> </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <div class="dropdown-header text-center">
+                <img class="img-md rounded-circle" src="{% static 'app/images/faces/face8.jpg' %}" alt="Profile image">
+                <p class="mb-1 mt-3 font-weight-semibold">{{request.user.first_name}} {{request.user.last_name}}</p>
+                <p class="fw-light text-muted mb-0">{{ request.user.email }}</p>
+              </div>
+              <a class="dropdown-item" href="{% url 'app:user_maintenance_page' %}"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>
+              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i> Messages</a>
+              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-calendar-check-outline text-primary me-2"></i> Activity</a>
+<!--              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-help-circle-outline text-primary me-2"></i> FAQ</a>-->
+              <a class="dropdown-item" href="{% url 'app:logout' %}"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:../../partials/_settings-panel.html -->
+      {% if request.user.employee.is_manager %}
+
+      <div class="theme-setting-wrapper">
+        <div id="settings-trigger" class="bg-warning"><i class="ti-settings bg-info"></i></div>
+        <div id="theme-settings" class="settings-panel">
+          <i class="settings-close ti-close"></i>
+          <p class="settings-heading bg-warning">ADD EXTERNAL COMPANY</p>
+          <form method="post" id="company-form">
+            {% csrf_token %}
+            <div class="sidebar-bg-options selected" id="company-name-div"><input class="form-control" type="text" placeholder="Name" name="comname" id="comname"></div>
+            <div class="sidebar-bg-options selected" id="company-email-div"><input class="form-control" type="email" placeholder="Contact Email" id="commail" name="comemail" ></div>
+            <div class="sidebar-bg-options selected" id="company-tel-div"><input class="form-control" type="email" placeholder="Telephone" id="comtel" name="comtel" ></div>
+            <div class="sidebar-bg-options selected" id="company-v"><button class="btn btn-warning btn-block btn-xs" type="button" id="company_post">submit</button></div>
+         </form>
+          <p class="settings-heading mt-2 bg-warning">HEADER SKINS</p>
+          <div class="color-tiles mx-0 px-4">
+            <div class="tiles success"></div>
+            <div class="tiles warning"></div>
+            <div class="tiles danger"></div>
+            <div class="tiles info"></div>
+            <div class="tiles dark"></div>
+            <div class="tiles default"></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div id="right-sidebar" class="settings-panel">
+        <i class="settings-close ti-close"></i>
+        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="todo-tab" data-bs-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="chats-tab" data-bs-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="setting-content">
+          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
+            <div class="add-items d-flex px-3 mb-0">
+              <form class="form w-100">
+                <div class="form-group d-flex">
+                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
+                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
+                </div>
+              </form>
+            </div>
+            <div class="list-wrapper px-3">
+              <ul class="d-flex flex-column-reverse todo-list">
+                <li>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox">
+                      Team review meeting at 3.00 PM
+                    </label>
+                  </div>
+                  <i class="remove ti-close"></i>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox">
+                      Prepare for presentation
+                    </label>
+                  </div>
+                  <i class="remove ti-close"></i>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox">
+                      Resolve all the low priority tickets due today
+                    </label>
+                  </div>
+                  <i class="remove ti-close"></i>
+                </li>
+                <li class="completed">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox" checked>
+                      Schedule meeting for next week
+                    </label>
+                  </div>
+                  <i class="remove ti-close"></i>
+                </li>
+                <li class="completed">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox" checked>
+                      Project review
+                    </label>
+                  </div>
+                  <i class="remove ti-close"></i>
+                </li>
+              </ul>
+            </div>
+            <h4 class="px-3 text-muted mt-5 fw-light mb-0">Events</h4>
+            <div class="events pt-4 px-3">
+              <div class="wrapper d-flex mb-2">
+                <i class="ti-control-record text-primary me-2"></i>
+                <span>Feb 11 2018</span>
+              </div>
+              <p class="mb-0 font-weight-thin text-gray">Creating component page build a js</p>
+              <p class="text-gray mb-0">The total number of sessions</p>
+            </div>
+            <div class="events pt-4 px-3">
+              <div class="wrapper d-flex mb-2">
+                <i class="ti-control-record text-primary me-2"></i>
+                <span>Feb 7 2018</span>
+              </div>
+              <p class="mb-0 font-weight-thin text-gray">Meeting with Alisa</p>
+              <p class="text-gray mb-0 ">Call Sarah Graves</p>
+            </div>
+          </div>
+          <!-- To do section tab ends -->
+          <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
+            <div class="d-flex align-items-center justify-content-between border-bottom">
+              <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
+              <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 fw-normal">See All</small>
+            </div>
+            <ul class="chat-list">
+              <li class="list active">
+                <div class="profile"><img src="{% static 'app/images/faces/face1.jpg' %}" alt="image"><span class="online"></span></div>
+                <div class="info">
+                  <p>Thomas Douglas</p>
+                  <p>Available</p>
+                </div>
+                <small class="text-muted my-auto">19 min</small>
+              </li>
+              <li class="list">
+                <div class="profile"><img src="{% static 'app/images/faces/face2.jpg' %}" alt="image"><span class="offline"></span></div>
+                <div class="info">
+                  <div class="wrapper d-flex">
+                    <p>Catherine</p>
+                  </div>
+                  <p>Away</p>
+                </div>
+                <div class="badge badge-success badge-pill my-auto mx-2">4</div>
+                <small class="text-muted my-auto">23 min</small>
+              </li>
+              <li class="list">
+                <div class="profile"><img src="{% static 'app/images/faces/face3.jpg' %}" alt="image"><span class="online"></span></div>
+                <div class="info">
+                  <p>Daniel Russell</p>
+                  <p>Available</p>
+                </div>
+                <small class="text-muted my-auto">14 min</small>
+              </li>
+              <li class="list">
+                <div class="profile"><img src="{% static 'app/images/faces/face4.jpg' %}" alt="image"><span class="offline"></span></div>
+                <div class="info">
+                  <p>James Richardson</p>
+                  <p>Away</p>
+                </div>
+                <small class="text-muted my-auto">2 min</small>
+              </li>
+              <li class="list">
+                <div class="profile"><img src="{% static 'app/images/faces/face5.jpg' %}" alt="image"><span class="online"></span></div>
+                <div class="info">
+                  <p>Madeline Kennedy</p>
+                  <p>Available</p>
+                </div>
+                <small class="text-muted my-auto">5 min</small>
+              </li>
+              <li class="list">
+                <div class="profile"><img src="{% static 'app/images/faces/face6.jpg' %}" alt="image"><span class="online"></span></div>
+                <div class="info">
+                  <p>Sarah Graves</p>
+                  <p>Available</p>
+                </div>
+                <small class="text-muted my-auto">47 min</small>
+              </li>
+            </ul>
+          </div>
+          <!-- chat tab ends -->
+        </div>
+      </div>
+      <!-- partial -->
+      <!-- partial:../../partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:dashboard' %}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Asset Management</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" >
+              <i class="menu-icon mdi mdi-floor-plan"></i>
+              <span class="menu-title">Assets</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                {% if request.user.employee.is_manager %}
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:assets_manager' %}">Log Asset</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:transfer_multiple_assets' %}">Internal Transfer</a></li>
+<!--                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:external_transfers' %}">External Transfer </a></li>-->
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:transfer_my_asset' %}">Transfer My Asset</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:my_assets' %}">My Assets</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:asset_list' %}">All Assets</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:transfer_list' %}">All Asset Transfers</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:awaiting_approval' %}">Awaiting Approval</a></li>
+                      <li class="nav-item"> <a class="nav-link" href="{% url 'app:unacknowledged' %}">Unacknowledged</a></li>
+
+                {% else %}
+                    <li class="nav-item"> <a class="nav-link" href="{% url 'app:my_assets' %}">My Assets</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{% url 'app:unacknowledged' %}">Unacknowledged</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{% url 'app:transfer_my_asset' %}">Transfer My Asset</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </li>
+
+          {% if user.employee.is_manager %}
+          <li class="nav-item nav-category">MANAGEMENT</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+              <i class="menu-icon mdi mdi-card-text-outline"></i>
+              <span class="menu-title">Asset Administration</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{% url 'app:create_category' %}">Create Category</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'app:create_brand' %}">Create Brand</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+              <i class="menu-icon mdi mdi-chart-line"></i>
+              <span class="menu-title">System Administration</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'app:create_departments' %}">Create Department</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">Create Sub-Department</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">Create Branch</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item nav-category">pages</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-account-circle-outline"></i>
+              <span class="menu-title">User Pages</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'app:user_maintenance_page' %}"> User Maintenance Page </a></li>
+              </ul>
+            </div>
+          </li>
+          {% endif %}
+          <!--          <li class="nav-item nav-category">help</li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="http://bootstrapdash.com/demo/star-admin2-free/docs/documentation.html">-->
+<!--              <i class="menu-icon mdi mdi-file-document"></i>-->
+<!--              <span class="menu-title">Documentation</span>-->
+<!--            </a>-->
+<!--          </li>-->
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            {% block table %}
+
+            {% endblock %}
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="{% static 'app/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="{% static 'app/vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
+  <script src="{% static 'app/vendors/select2/select2.min.js' %}"></script>
+  <script src="{% static 'app/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="{% static 'app/js/off-canvas.js' %}"></script>
+  <script src="{% static 'app/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'app/js/template.js' %}"></script>
+  <script src="{% static 'app/js/settings.js' %}"></script>
+  <script src="{% static 'app/js/todolist.js' %}"></script>
+  <script src="{% static 'app/script.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'app/js/file-upload.js' %}"></script>
+  <script src="{% static 'app/js/typeahead.js' %}"></script>
+  <script src="{% static 'app/js/select2.js ' %}"></script>
+  <!-- End custom js for this page-->
+  <!-- DataTables  & Plugins -->
+<script src="{% static 'app/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'app/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'app/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'app/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'app/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+  <script src="{% static 'app/vendors/select2/select2.min.js' %}"></script>
+  <script src="{% static 'app/alert.js' %}"></script>
+  <script src="{% static 'app/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+<!-- Toastr -->
+<script src="{% static 'app/plugins/toastr/toastr.min.js' %}"></script>
+
+<script>
+
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": true, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "lengthMenu": [ 5,10, 15, 25, 50, 75, 100 ],
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+})
+</script>
+
+<script src="{% static 'app/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+
+  <script src="{% static 'app/select2/js/select2.full.min.js' %}"></script>
+
+</body>
+
+</html>

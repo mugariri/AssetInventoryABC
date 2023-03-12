@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>
+  {% block title %}{% endblock %}
+  </title>
+  <!-- plugins:css -->
+
+  <link rel="stylesheet" href="{% static 'app/plugins/select2/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/feather/feather.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/simple-line-icons/css/simple-line-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'app/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'app/select2/css/select2.min.css' %}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'app/css/vertical-layout-light/style.css' %}">
+<!--  <link rel="stylesheet" href="{% static 'app/css/style.css' %}">-->
+
+  <!-- endinject -->
+ <link rel="shortcut icon" href="{% static 'app/images/yellow.png' %}" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper" >
+
+      <div class="content-wrapper d-flex align-items-center auth px-0 bg-warning dr-">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-{% block size %}{% endblock %} mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5" style="border-radius: 10px;">
+              <div class="text-center text-warning">
+                  
+              </div>
+              <div class="brand-logo d-flex justify-content-center">
+                <img class="img-lg" src="{% static 'app/images/yellow.png' %}" alt="logo">
+              </div>
+<!--              <div class="brand-logo d-flex justify-content-center">-->
+<!--                <img src="{% static 'app/images/atlasb.png' %}" alt="logo">-->
+<!--              </div>-->
+                {% block form_header %}
+
+                {% endblock %}
+              <form method="post" >
+
+                {% csrf_token %}
+                  {% block form_body %}
+
+                  {% endblock %}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <script>
+{% block script %}
+
+{% endblock %}
+  </script>
+
+
+
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<script src="{% static 'app/js/script.js' %}"></script>
+<script src="{% static 'app/js/jquery.js' %}"></script>
+
+  <script src="{% static 'app/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'app/sw.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="{% static 'app/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="{% static 'app//js/off-canvas.js' %}"></script>
+  <script src="{% static 'app/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'app/js/template.js' %}"></script>
+  <script src="{% static 'app/js/settings.js' %}"></script>
+  <script src="{% static 'app/js/todolist.js' %}"></script>
+  <script src="{% static 'app/select2/js/select2.full.min.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+
+    });
+  </script>
+
+<script src="{% static 'app/vendors/typeahead.js/typeahead.bundle.min.js' %}">
+
+<script src="{% static 'app/js/typeahead.js' %}"></script>
+<script src="{% static 'app/vendors/select2/select2.min.js' %}"></script>
+
+<script >
+  {% block js %}
+
+  {% endblock %}
+</script>
+  <!-- endinject -->
+</body>
+
+</html>

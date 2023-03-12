@@ -1,0 +1,44 @@
+{% extends 'new_base.html' %}
+{% block title %}
+    All Hardware Requests
+{% endblock %}
+{% block table %}
+<!--    <div class="card-header">-->
+<!--        <h3 class="card-title">DataTable with default features</h3>-->
+<!--    </div>-->
+<!--              &lt;!&ndash; /.card-header &ndash;&gt;-->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead class="bg-warning">
+                <tr>
+                    <th>Requesting User</th>
+                    <th>Device Requested</th>
+                    <th>Reason For Request</th>
+                    <th>Head Of Requesting Department</th>
+                    <th>Date Requested</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for req in reqs%}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:infrastructure_manager_approve' id=req.id %}">{{ req.requisitioner.first_name }} {{ req.requisitioner.last_name }} </a></td>
+                     <td >{{ req.device_requested}}</td>
+                    <td>{{ req.reason_for_request}}</td>
+                    <td>{{ req.authorized_by}}</td>
+                    <td>{{ req.date_logged }}</td>
+                  </tr>
+            {% endfor %}
+                  </tbody>
+                  <tfoot class="bg-warning">
+                  <tr>
+                    <th>Requesting User</th>
+                    <th>Device Requested</th>
+                    <th>Reason For Request</th>
+                    <th>Head Of Requesting Department</th>
+                    <th>Date Requested</th>
+                </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+{% endblock %}

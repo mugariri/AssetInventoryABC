@@ -1,0 +1,141 @@
+{% extends "frame.html" %}
+
+{% block title %} Asset Transfer{% endblock %}
+{% block body %}
+
+
+<div class="content-wrapper " xmlns="http://www.w3.org/1999/html" id="content">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <div class="breadcrumb float-sm-right justify-content-center bg-warning">
+              <div class="form-check bg-warning">
+                <h4>
+                    <i class=""></i>BANCABC ASSET TRANSFER<br><br>
+                </h4>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content" >
+      <div class="container-fluid">
+        <div class="container">
+            <h2 class="" style="margin-left: auto;margin-right: auto; width: 15em"><b><u>TRANSFER  DETAILS</u></b></h2>
+
+                <h2 ><b> <u>ASSET INFORMATION</u> </b></h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>ASSET TAG: </h4> <h3> {{ transfer.asset.tag }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4> SERIAL TAG: </h4> <h3> {{ transfer.asset.serial_tag }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>DEVICE TYPE: </h4><h3> <i class="fa fa-laptop"></i>{{ transfer.asset.category}}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>REASON FOR TRANSFER: </h4> <h3>{{ transfer.reason }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b>SENDER SECTION </b></h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>APPROVED BY: </h4><h3> {{ transfer.being_moved_by.first_name }}  {{ transfer.being_moved_by.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4> SENDING DEPARTMENT: </h4> <h3>{{ transfer.being_moved_by.employee.department }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b><u>RECIPIENT SECTION</u></b></h2>
+                <div class="row row-sm">
+                    <div class="col-md-6">
+                        <h4>IN MANAGER :</h4> </h4><h3> {{ transfer.new_custodian.first_name }} {{ transfer.new_custodian.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                    <h4>RECEIVING DEPARTMENT: </h4><h3> {{ transfer.new_custodian.employee.department }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b><u>AUTHORIZER SECTION</u></b></h2>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4> HOD IT :</h4> </h4><h3> {{ transfer.approved_by.first_name }} {{ transfer.approved_by.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        {% if transfer.is_approved is True %}
+                          <button class="btn bg-success" disabled>Approved</button>
+                          {% else %}
+                          <div class="form-check">
+                                <button class="btn bg-warning btn-lg" disabled>Pending</button>
+                          </div>
+                          {% endif %}
+                    </div>
+                </div>
+      </div><!-- /.row -->
+      </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button class="btn bg-info btn-sm" id="cmd"><i class="menu-icon fa fa-print"></i>Generate PDF</button>
+                    </div>
+                </div>
+            </div><!-- /.col -->
+        </div>
+    </section>
+        <section class="content-footer">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <div class="breadcrumb float-sm-right justify-content-center bg-warning">
+              <div class="form-check bg-warning">
+                <h4>
+                    BANCABC ASSET TRANSFER<br><br>
+                </h4>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+    window.jsPDF = window.jspdf.jsPDF
+    var doc = new jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    $('#cmd').click(function () {
+        alert("Please enter")
+        doc.fromHTML($('#content').html(), 15, 15, {
+            'width': 170,
+                'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample-file.pdf');
+    });
+
+{% endblock %}

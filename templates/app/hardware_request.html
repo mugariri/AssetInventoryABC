@@ -1,0 +1,264 @@
+{% extends 'new_base.html' %}
+{% block title %}
+  Hardware Request
+{% endblock %}
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning">
+                <h3 class="card-title">Infrastructure Allocation Request</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+<!--                        <span class="bs-stepper-circle btn-warning ">1</span>-->
+                        <span class="bs-stepper-label ">Hardware Request</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <form method="post" id="create_asset">
+                          {% csrf_token %}
+                <div class="container">
+                          <div class="row">
+                            <div class="col-lg">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form4Example1">REASON FOR REQUEST</label>
+                                    <input type="text" id="reason" name="reason" class="form-control " placeholder="New Employee, Replacement, Device Stolen etc" />
+                                    <h5 id="reasoncheck" style="color: red;">
+                                        **Reason for request is missing
+                                    </h5>
+                                  </div>
+
+                                  <!-- Email input -->
+                                  <div class="form-outline mb-4">
+                                      <label class="form-label" for="form4Example2">DEVICE CATEGORY</label>
+                                       <select class="form-control select2" name="category" id="category">
+                                          <option selected="selected" disabled>Device Type</option>
+                                          {% for category in categories %}
+                                            <option value="{{ category}}">{{category.name}}</option>
+                                          {% endfor %}
+                                    </select>
+                                      <h5 id="categorycheck" style="color: red;">
+                                        **Reason for request is missing
+                                    </h5>
+                                  </div>
+
+                                  <!-- Message input -->
+                                  <div class="form-outline mb-4">
+
+                                    <label class="form-label" for="form4Example3">AUTHORIZING HEAD</label>
+                                  <select class="form-control select2" name="head" id="head">
+                                      <option selected="selected" disabled>Head Of Respective Department</option>
+                                      {% for head in heads %}
+                                        <option value="{{ head.username}}">{{head.first_name}} {{head.last_name}}</option>
+                                      {% endfor %}
+                                </select>
+                                  <h5 id="headcheck" style="color: red;">
+                                       **Reason for request is missing
+                                  </h5>
+
+
+                                  </div>
+
+                                  <!-- Checkbox -->
+                                  <div class="form-check d-flex  mb-4">
+                                    <input type="checkbox" class="form-check-input" id="replace" name="replace" >
+                                    <label class="form-check-label" for="form4Example4">
+                                      REPLACEMENT
+                                    </label>
+                                  </div>
+
+                            </div>
+                            <div class="col-lg ">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form4Example1">DESIGNATION</label>
+                                    <input type="text" id="designation" name="designation" class="form-control " placeholder="Intern, Manager, Developer etc" />
+                                    <h5 id="designationcheck" style="color: red;">
+                                        **Reason for request is missing
+                                    </h5>
+                                  </div>
+                                <label class="form-check-label" for="form4Example4">
+                                      REQUEST JUSTIFICATION
+                                </label>
+                              <textarea class="mt-4" style="width:100%; border-radius: 5px;" id="justification" name="justification" rows=8 placeholder="Provide a justification for your request"></textarea>
+                                <h5 id="justificationcheck" style="color: red;">
+                                    **Reason for request is missing
+                                </h5>
+                            </div>
+                                <div class="row">
+                          {% if messages %}
+                              <ul class="">
+                                  {% for message in messages %}
+                                      {% if message.tags %}
+                                          <h4 class="{{ message.tags }} text-center {% if message.tags == 'warning' %} text-danger {% else %} text-success {% endif %} ">
+                                      {{ message }}</h4>
+                                  {% endif %}
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+                        </div>
+                              <div class="row justify-content-center" >
+                                  <h5 id="post" style="color: red;">
+                                        **Request Sent Success Logged
+                                    </h5>
+                              </div>
+                              <button type="submit" class="btn btn-warning">
+                                Submit Request
+                              </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+
+{% block js %}
+     $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+          theme: 'bootstrap4'
+        })
+    })
+
+$(document).ready(function () {
+    $("#reasoncheck").hide();
+    $("#post").hide();
+    $("#categorycheck").hide();
+    $("#headcheck").hide();
+    $("#headcheck").hide();
+    $("#designationcheck").hide();
+    $("#justificationcheck").hide();
+<!--    function validate_reason(){-->
+<!--                if( $("#reason").val() == ""  ){-->
+<!--                     $("#reasoncheck").show();-->
+<!--                    $("#reasoncheck").html("**kindly fill in reason for request");-->
+<!--                    $("#reasoncheck").css("color", "red");-->
+<!--                    $("#reason").removeClass('is-valid');-->
+<!--                    $("#reason").addClass('is-invalid');-->
+<!--                    return false;-->
+<!--                }else{-->
+<!--                    return true;-->
+<!--                }-->
+
+<!--    }-->
+<!--    function validate_justification(){-->
+
+<!--                if( $("#justification").val() == "" ){-->
+<!--                     $("#justificationcheck").show();-->
+<!--                    $("#justificationcheck").html("**kindly provide a justification for request");-->
+<!--                    $("#justificationcheck").css("color", "red");-->
+<!--                    $("#justification").removeClass('is-valid');-->
+<!--                    $("#justification").addClass('is-invalid');-->
+<!--                    return false;-->
+<!--                }else{-->
+<!--                    return true;-->
+<!--                }-->
+
+<!--    }-->
+<!--    function validate_category(){-->
+
+<!--                if( $("#category").val() == null){-->
+<!--                     $("#categorycheck").show();-->
+<!--                    $("#categorycheck").html("**kindly provide a device category for request");-->
+<!--                    $("#categorycheck").css("color", "red");-->
+<!--                    $("#categorycheck").removeClass('is-valid');-->
+<!--                    $("#categorycheck").addClass('is-invalid');-->
+<!--                    return false;-->
+<!--                }else{-->
+<!--                    console.log($("#category").val());-->
+<!--                    return true;-->
+<!--                }-->
+
+<!--    }-->
+<!--    function validate_head(){-->
+<!--                if( $("#head").val() == null){-->
+
+<!--                     $("#headcheck").show();-->
+<!--                    $("#headcheck").html("**kindly provide an authorizer");-->
+<!--                    $("#headcheck").css("color", "red");-->
+<!--                    $("#head").removeClass('is-valid');-->
+<!--                    $("#head").addClass('is-invalid');-->
+<!--                    return false;-->
+<!--                }else{-->
+<!--                    console.log($("#headcheck").val());-->
+<!--                    return true;-->
+<!--                }-->
+
+<!--    }-->
+<!--    function validate_designation(){-->
+<!--            if( $("#designation").val() == ""){-->
+<!--                    $("#designationcheck").show();-->
+<!--                    $("#designationcheck").html("**kindly provide your designation");-->
+<!--                    $("#designationcheck").css("color", "red");-->
+<!--                    $("#designation").removeClass('is-valid');-->
+<!--                    $("#designation").addClass('is-invalid');-->
+<!--                    return false;-->
+<!--            }-->
+
+<!--    }-->
+<!--    $(document).on("submit", "#create_asset", function (e) {-->
+<!--            e.preventDefault();-->
+<!--            validate_category();-->
+<!--            validate_reason();-->
+<!--            validate_justification();-->
+<!--            validate_designation();-->
+<!--            var Toast = Swal.mixin({-->
+<!--                   toast: true,-->
+<!--                   position: 'top-end',-->
+<!--                   showConfirmButton: false,-->
+<!--                   timer: 3000-->
+<!--            });-->
+<!--            if (validate_head() == true && validate_category() == true && validate_reason() == true && validate_justification() == true){-->
+<!--                $.ajax({-->
+<!--                    type: 'POST',-->
+<!--                    url: "/abcassetsmanager/hardwarerequest",-->
+<!--                    data: {-->
+<!--                        designation: $("#designation").val(),-->
+<!--                        reason: $("#reason").val(),-->
+<!--                        head: $("#head").val(),-->
+<!--                        replace: $("#replace").val(),-->
+<!--                        justification: $("#justification").val(),-->
+<!--                        category: $("#category").val(),-->
+<!--                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),-->
+<!--                        success: function(data){-->
+<!--                            $('#create_asset').trigger("reset");-->
+<!--                            document.getElementById("create_asset").reset();-->
+<!--                            $("#category option").prop("selected", false).trigger( "change" );-->
+<!--                            $("#head option").prop("selected", false).trigger( "change" );-->
+<!--                            $("#post").show();-->
+<!--                            $("#post").html("Request Sent For Authorization");-->
+<!--                            $("#post").css("color", "green");-->
+<!--                            $("#reasoncheck").hide();-->
+<!--                            $("#categorycheck").hide();-->
+<!--                            $("#headcheck").hide();-->
+<!--                            $("#headcheck").hide();-->
+<!--                            $("#designationcheck").hide();-->
+<!--                            $("#justificationcheck").hide();-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--    })-->
+
+})
+{% endblock %}

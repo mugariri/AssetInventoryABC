@@ -1,0 +1,20 @@
+{% autoescape off %}
+Regards {{transfer.approved_by.first_name}} {{ transfer.approved_by.last_name}},
+
+An asset transfer has been initiated by {{transfer.being_moved_by.first_name}} {{transfer.being_moved_by.last_name}}
+seeking your approval.
+
+Transaction
+RECIPIENT: {{ transfer.new_custodian.first_name}}  {{ transfer.new_custodian.last_name}}
+ASSET TAG:  {{ transfer.asset.tag }}
+SERIAL TAG: {{ transfer.asset.serial_tag }}
+ASSET TYPE: {{transfer.asset.category.name}}
+REASON :   {{ transfer.reason.name}}
+
+Kindly click link below to approve
+{{ protocol }}://{{ domain }}{% url 'abcassetsmanager:asset_transfer' id=transfer.id %}
+
+Sincerely,
+BancABC Asset Management
+
+{% endautoescape %}

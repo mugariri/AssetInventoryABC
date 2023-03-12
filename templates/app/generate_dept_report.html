@@ -1,0 +1,155 @@
+{% extends 'new_base.html' %}
+{% load static %}
+{% block title %}
+    Generate Department Report
+{% endblock %}
+
+
+{% block custom_css_files %}
+  <link rel="stylesheet" href="{% static 'app/bootstrap-datepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'app/plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+
+{% block style %}
+
+
+{% endblock %}
+
+{% block table %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header bg-warning text-center">
+                <h3 class="card-title">Department Reports</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="bs-stepper">
+                  <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step" data-target="#logins-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+<!--                        <span class="bs-stepper-circle btn-warning ">1</span>-->
+                        <span class="bs-stepper-label ">Report Generation</span>
+                          <span class='loading loading-spinner-tiny inline-block'></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    <form method="post" id="create_asset">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Restriction</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" id="restriction" name="restriction">
+                                <option selected disabled>Select A Restriction</option>
+                                <option value='assets' >Assets</option>
+                                <option value='transfers' >Asset Transfers</option>
+                                <option value="requests" >Hardware Requests</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Department</label>
+                          <div class="col-sm-9">
+                            <select class="form-control select2" id="branch" name="branch">
+                                <option selected disabled>Select A Department</option>
+                                {% for dept in depts %}
+                                    <option value='{{ dept.id }}' >{{ dept.name }}</option>
+                                {% endfor %}          
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" id="dates">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date Range</label>
+                          <div class="col-sm-4">
+                            <div class="input-group ">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="far fa-calendar-alt"></i>
+                                </span>
+                              </div>
+                              <input type="date" class="form-control float-right" id="from_date" name="from_date">
+                            </div>
+                          </div>
+                          <div class="col-sm-5">
+                            <div class="input-group ">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="far fa-calendar-alt"></i>
+                                </span>
+                              </div>
+                              <input type="date" class="form-control float-right" id="to_date"  name="to_date">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                          {% if messages %}
+                              <ul class="">
+                                  {% for message in messages %}
+                                      {% if message.tags %}
+                                          <h4 class="{{ message.tags }} text-center {% if message.tags == 'warning' %} text-danger {% else %} text-success {% endif %} ">
+                                      {{ message }}</h4>
+                                  {% endif %}
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+                        </div>
+                        
+                      <button type="submit" class="btn btn-warning">SUBMIT</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              
+              <div class="card-footer bg-warning">
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+{% endblock %}
+
+{% block js %}
+ $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+})
+$( document ).ready(function() {
+ 
+  $("#dates").hide();
+
+});
+$('#restriction').on('change', function() {
+  
+  if(this.value == "requests"){
+    $("#dates").show();
+  }else{
+    $("#dates").hide();
+  }
+});
+{% endblock %}
+
+{% block custom_js_files %}
+  <script src="{% static 'app/plugins/daterangepicker/daterangepicker.js' %}"></script>
+{% endblock %}

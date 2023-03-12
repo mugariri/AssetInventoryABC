@@ -1,0 +1,56 @@
+{% extends 'new_base.html' %}
+{% block title %}
+    All Hardware Requests
+{% endblock %}
+{% block table %}
+<!--    <div class="card-header">-->
+<!--        <h3 class="card-title">DataTable with default features</h3>-->
+<!--    </div>-->
+<!--              &lt;!&ndash; /.card-header &ndash;&gt;-->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead class="bg-warning">
+                <tr>
+                    <th>Requesting User</th>
+                    <th>Device Requested</th>
+                    <th>Reason For Request</th>
+                    <th>Date Requested</th>
+                    <th>Auth Line Manager</th>
+                    <th>Local Approval</th>
+                    <th>IN Approval</th>
+                    <th>Tech Services Approval</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            {% for req in requesitions %}
+                  <tr>
+                    <td><a href="{% url 'abcassetsmanager:hardware_request_details' id=req.id %}">{{ req.requisitioner.first_name }} {{ req.requisitioner.last_name }} </a></td>
+                     <td >{{ req.device_requested}}</td>
+                    <td>{{ req.reason_for_request}}</td>
+                      <td>{{ req.date_logged }}</td>
+                      <td>{{ req.requisitioner.employee.line_manager.first_name }} {{ req.requisitioner.employee.line_manager.last_name }}</td>
+                    <td {% if req.authorizer_accepted %}class="bg-success" {% elif req.authorizer_rejected %} class="bg-danger" {% endif %}>{{ req.authorized_by}}</td>
+                    <td class="{% if req.infrastructure_manager_accepted == True %} bg-success {% endif %} {% if req.infrastructure_manager_rejected == True %} bg-danger {% endif %} {% if req.authorizer_accepted == True  and req.authorizer_rejected == False and req.infrastructure_manager_accepted == False  %} bg-warning {% endif %}">{% if req.infrastructure_manager_accepted == True %} APPROVED {% endif %} {% if req.infrastructure_manager_rejected == True %} REVOKED {% endif %}{% if req.authorizer_accepted == True  and req.authorizer_rejected == False and req.infrastructure_manager_accepted == False and req.infrastructure_manager_rejected == False %} PENDING {% endif %}</td>
+                    <td class="{% if req.head_of_technology_services_accepted == True and req.head_of_technology_services_rejected == False %} bg-success {% elif req.head_of_technology_services_accepted == False and req.head_of_technology_services_rejected == True %} bg-danger {% elif req.head_of_technology_services_accepted == False and req.head_of_technology_services_rejected == False and req.infrastructure_manager_accepted == True %} bg-warning {% endif %}">{% if req.head_of_technology_services_accepted == True and req.head_of_technology_services_rejected == False %} APPROVED {% elif req.head_of_technology_services_accepted == False and req.head_of_technology_services_rejected == True %} REVOKED {% elif req.head_of_technology_services_accepted == False and req.head_of_technology_services_rejected == False and req.infrastructure_manager_accepted == True %} PENDING {% endif %}</td>
+
+                  </tr>
+            {% endfor %}
+                  </tbody>
+                  <tfoot class="bg-warning">
+                  <tr>
+                    <th>Requesting User</th>
+                    <th>Device Requested</th>
+                    <th>Reason For Request</th>
+                      <th>Date Requested</th>
+                      <th>Auth Line Manager</th>
+                    <th>Authorizing Head</th>
+                    <th>IN Approval</th>
+                    <th>Tech Services Approval</th>
+
+                </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+{% endblock %}

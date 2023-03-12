@@ -1,0 +1,97 @@
+{% extends "frame.html" %}
+
+{% block title %} Hardware Request{% endblock %}
+{% block body %}
+
+
+<div class="content-wrapper " xmlns="http://www.w3.org/1999/html">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <div class="breadcrumb float-sm-right justify-content-center bg-warning">
+              <div class="form-check bg-warning">
+                <h4>
+                    <i class=""></i>BANCABC HARDWARE REQUEST<br><br>
+                </h4>
+              </div>
+              <li class="breadcrumb-item active"></li>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content" >
+      <div class="container-fluid">
+        <div class="container">
+            <h2 class="" style="margin-left: auto;margin-right: auto; width: 15em"><b>REQUEST  DETAILS</b></h2>
+
+                <h2 ><b>REQUESTING USER INFORMATION SECTION</b></h2>
+            <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>REQUESTING USER: </h4> <h3> {{ req.requisitioner.first_name }}  {{ req.requisitioner.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>USER DESIGNATION: </h4> <h3> {{ req.designation }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>DEVICE TYPE: </h4><h3> {{ req.device_requested }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>REASON FOR REQUEST: </h4> <h3>{{ req.reason_for_request }}</h3>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b>AUTHORIZING HEAD SECTION</b></h2>
+            <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>APPROVED BY: </h4><h3> {{ req.authorized_by.first_name }} {{ req.authorized_by.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>APPROVAL: </h4> <button class="form-control {% if req.authorizer_accepted == True %} bg-success {% endif %} {% if req.authorizer_rejected == True %} bg-danger {% endif %}" type="button" value="" disabled>{% if req.authorizer_accepted == True %} APPROVED BY {{ req.authorized_by  }} {% endif %} {% if req.authorizer_rejected == True %} REJECTED  BY {{ req.authorized_by  }} {% endif %}</button>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b>INFRASTRUCTURE AND NETWORKS MANAGER SECTION</b></h2>
+            <hr>
+                <div class="row row-sm">
+                    <div class="col-md-6">
+                        <h4>IN MANAGER :</h4> </h4><h3> {{ req.authorized_by.first_name }} {{ req.authorized_by.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>APPROVAL: </h4> <button class="form-control {% if req.infrastructure_manager_accepted == True %} bg-success {% endif %} {% if req.infrastructure_manager_rejected == True %} bg-danger {% endif %}" type="button" value="" disabled>{% if req.infrastructure_manager_accepted == True %} APPROVED BY {{ req.authorized_by  }} {% endif %} {% if req.infrastructure_manager_rejected == True %} REJECTED  BY {{ req.authorized_by  }} {% endif %}</button>
+                    </div>
+                </div>
+            <br> <br>
+            <h2 ><b>HEAD OF TECHNOLOGY SERVICES SECTION</b></h2>
+            <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4> HOD IT :</h4> </h4><h3> {{ req.authorized_by.first_name }} {{ req.authorized_by.last_name }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>APPROVAL: </h4> <button class="form-control {% if req.head_of_technology_services_accepted == True %} bg-success {% endif %} {% if req.head_of_technology_services_rejected == True %} bg-danger {% endif %}" type="button" value="" disabled>{% if req.head_of_technology_services_accepted == True %} APPROVED BY {{ req.authorized_by  }} {% endif %} {% if req.head_of_technology_services_rejected == True %} REJECTED  BY {{ req.authorized_by  }} {% endif %}</button>
+                    </div>
+                </div>
+      </div><!-- /.row -->
+      </div>>
+    </section>
+    <!-- /.content -->
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+    window.print();
+{% endblock %}
